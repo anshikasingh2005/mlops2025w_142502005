@@ -1,3 +1,7 @@
 This is the 1st comment commit.
+<<<<<<< HEAD
 This is the 2nd comment commit.
 This is the 3rd comment commit.
+=======
+This is the 2nd comment commit.
+>>>>>>> eb2cad6 (four)
