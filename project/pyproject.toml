@@ -4,4 +4,9 @@ version = "0.1.0"
 description = "Add your description here"
 readme = "README.md"
 requires-python = ">=3.10"
-dependencies = []
+dependencies = [
+    "fitz>=0.0.1.dev2",
+    "langchain>=0.3.27",
+    "langchain-community>=0.3.29",
+    "reportlab>=4.4.3",
+]
