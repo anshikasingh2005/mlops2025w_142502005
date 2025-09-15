@@ -17,3 +17,4 @@ text_splitter = RecursiveCharacterTextSplitter(chunk_size = 1000, chunk_overlap 
 splits = text_splitter.split_documents(docs)
 print(splits[0])
 vectorstore = Chroma.from_documents(documents = splits, embedding = OpenAIEmbeddings())
+#check
