@@ -1,0 +1,15 @@
+[resnet34]
+learning_rate = 0.01
+batch_size = 16
+
+[resnet50]
+learning_rate = 0.001
+batch_size = 32
+
+[resnet101]
+learning_rate = 0.005
+batch_size = 32
+
+[resnet152]
+learning_rate = 0.0005
+batch_size = 64
