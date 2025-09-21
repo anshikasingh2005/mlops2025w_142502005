@@ -1,0 +1,6 @@
+{
+    "learning_rates": [0.1, 0.01, 0.001],
+    "optimizers": ["adam", "sgd"],
+    "momentum": [0.5, 0.9]
+  }
+  

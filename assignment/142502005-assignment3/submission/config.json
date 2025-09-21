@@ -1,0 +1,5 @@
+{
+    "data_source": "data/images",
+    "model": ["resnet34","resnet50","resnet101","resnet152"]
+  }
+  
