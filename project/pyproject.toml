@@ -13,4 +13,5 @@ dependencies = [
     "reportlab>=4.4.3",
     "structlog>=25.4.0",
     "typing>=3.10.0.0",
+    "uuid>=1.30",
 ]
