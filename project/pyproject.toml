@@ -6,10 +6,17 @@ readme = "README.md"
 requires-python = ">=3.10"
 dependencies = [
     "datetime>=5.5",
+    "dotenv>=0.9.9",
+    "fastapi>=0.119.0",
     "fitz>=0.0.1.dev2",
     "langchain>=0.3.27",
     "langchain-community>=0.3.29",
+    "langchain-core>=0.3.76",
+    "langchain-google-genai>=2.1.12",
+    "langchain-groq>=0.3.8",
+    "langchain-text-splitters>=0.3.11",
     "logging>=0.4.9.6",
+    "pypdf>=6.1.1",
     "reportlab>=4.4.3",
     "structlog>=25.4.0",
     "typing>=3.10.0.0",

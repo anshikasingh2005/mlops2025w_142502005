@@ -13,9 +13,9 @@ load_dotenv()
 def test_document_ingestion_and_rag():
     try:
         test_files = [
-            "D:\projects\mlops2025w_142502005\project\data\NCERT-Class-6-History.pdf",
-            "D:\projects\mlops2025w_142502005\project\data\NCERT-Class-7-History.pdf",
-            "D:\projects\mlops2025w_142502005\project\data\NCERT-Class-8-History.pdf"
+            "D:/projects/mlops2025w_142502005/project/data/NCERT-Class-6-History.pdf",
+            "D:/projects/mlops2025w_142502005/project/data/NCERT-Class-7-History.pdf",
+            "D:/projects/mlops2025w_142502005/project/data/NCERT-Class-8-History.pdf"
         ]
 
         uploaded_files = []

@@ -14,8 +14,6 @@ from multi_doc_chat.utils.file_io import save_uploaded_files
 from multi_doc_chat.utils.document_ops import load_documents
 import hashlib
 import sys
-
-
 def generate_session_id() -> str:
     """Generate a unique session ID with timestamp."""
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
