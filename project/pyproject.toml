@@ -12,4 +12,5 @@ dependencies = [
     "logging>=0.4.9.6",
     "reportlab>=4.4.3",
     "structlog>=25.4.0",
+    "typing>=3.10.0.0",
 ]
