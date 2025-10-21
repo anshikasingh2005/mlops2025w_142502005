@@ -1,0 +1,5 @@
+{
+  "class_idx": 54,
+  "confidence": 0.3513,
+  "latency_ms": 9.78
+}
