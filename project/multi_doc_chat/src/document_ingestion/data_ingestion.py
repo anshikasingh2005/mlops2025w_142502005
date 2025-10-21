@@ -3,7 +3,7 @@ from pathlib import Path
 from typing import Iterable, List, Optional, Dict, Any
 from langchain.schema import Document
 from langchain_text_splitters import RecursiveCharacterTextSplitter
-from langchain_community.vectorstores import FAISS
+#from langchain_community.vectorstores import FAISS
 from multi_doc_chat.utils.model_loader import ModelLoader
 from multi_doc_chat.logger import GLOBAL_LOGGER as log
 from multi_doc_chat.exception.custom_exception import DocumentPortalException
@@ -14,6 +14,7 @@ from multi_doc_chat.utils.file_io import save_uploaded_files
 from multi_doc_chat.utils.document_ops import load_documents
 import hashlib
 import sys
+from langchain.vectorstores import Chroma
 def generate_session_id() -> str:
     """Generate a unique session ID with timestamp."""
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
