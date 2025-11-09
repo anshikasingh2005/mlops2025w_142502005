@@ -18,21 +18,36 @@ print("HF_API_TOKEN loaded:", os.getenv("HF_API_TOKEN"))
 
 
 # Bootstrapping index
-embedder = get_embedder(settings.EMBEDDING_MODEL)
-try:
-    store = load_chroma(embedder, settings.CHROMA_DIR)
-    # If empty, attempt initial build from NCERT (if present)
-    if store._collection.count() == 0 and settings.NCERT_DIR.exists():
-        docs = load_pdfs(settings.NCERT_DIR)
-        chunks = split_docs(docs)
-        store = build_chroma(chunks, embedder, settings.CHROMA_DIR)
-except Exception:
-    # First run
-    docs = load_pdfs(settings.NCERT_DIR)
-    chunks = split_docs(docs) if docs else []
-    store = build_chroma(chunks, embedder, settings.CHROMA_DIR)
+# embedder = get_embedder(settings.EMBEDDING_MODEL)
+# try:
+#     store = load_chroma(embedder, settings.CHROMA_DIR)
+#     # If empty, attempt initial build from NCERT (if present)
+#     if store._collection.count() == 0 and settings.NCERT_DIR.exists():
+#         docs = load_pdfs(settings.NCERT_DIR)
+#         chunks = split_docs(docs)
+#         store = build_chroma(chunks, embedder, settings.CHROMA_DIR)
+# except Exception:
+#     # First run
+#     docs = load_pdfs(settings.NCERT_DIR)
+#     chunks = split_docs(docs) if docs else []
+#     store = build_chroma(chunks, embedder, settings.CHROMA_DIR)
 
+# retriever = build_retriever(store, k=settings.RETRIEVER_K)
+
+# --- This is the new, fast-loading code ---
+
+# 1. Load the embedder
+embedder = get_embedder(settings.EMBEDDING_MODEL)
+
+# 2. Load the pre-built database
+print("Loading persistent ChromaDB...")
+store = load_chroma(embedder, settings.CHROMA_DIR)
+print(f"✅ ChromaDB loaded with {store._collection.count()} documents.")
+
+# 3. Build the retriever
 retriever = build_retriever(store, k=settings.RETRIEVER_K)
+
+# --- End of new code ---
 
 # LLM via TGI
 llm = make_llm_tgi(settings.TGI_URL, settings.HF_API_TOKEN)
