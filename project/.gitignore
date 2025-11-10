@@ -1,5 +1,5 @@
 # Python-generated files
-__pycache__/
+project/__pycache__/
 *.py[oc]
 build/
 dist/
@@ -7,7 +7,10 @@ wheels/
 *.egg-info
 
 # Virtual environments
-.venv
+project/venv/
 
- 
- data/
+project/wandb/
+project/data/
+project/best_config.json
+project/data/chroma/
+project/chroma_temp_*
