@@ -14,3 +14,9 @@ project/data/
 project/best_config.json
 project/data/chroma/
 project/chroma_temp_*
+
+# Logs
+app/logs/
+app/wandb/
+__pycache__/
+*.log

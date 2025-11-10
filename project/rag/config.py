@@ -13,7 +13,7 @@ class Settings(BaseSettings):
     # Generation via TGI
     TGI_URL: str = "http://localhost:8080"
     HF_API_TOKEN: str | None = None
-
+    WANDB_API_KEY: str | None = None  
     class Config:
         env_file = ".env"
 

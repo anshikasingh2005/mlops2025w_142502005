@@ -20,7 +20,7 @@ def run_task(llm, retriever, mode: str, grade: int, question: str, history):
     if srcs:
         answer += "\n\nSources:\n" + "\n".join(srcs)
     return answer
-'''
+
 # rag/tasks.py
 from .prompts import SUMMARIZE, BULLET_NOTES, QUIZ
 from .chain import make_chain, ask
@@ -31,7 +31,7 @@ MODES = {
     "Quiz": QUIZ,
     "Free Chat": "Use context to answer clearly.\n\nContext:\n{context}\n\nQuestion: {question}\nAnswer:"
 }
-
+'''
 
 # rag/tasks.py
 from .prompts import SUMMARIZE, BULLET_NOTES, QUIZ
@@ -62,7 +62,6 @@ def run_task(llm, retriever, mode: str, grade: int, question: str, history):
 
     # 4️. Run the query
     answer, sources = ask(chain, question, history or [])
-
     # 5.Collect source metadata (if retriever provides docs)
     srcs = sorted({
         d.metadata.get("source", "")
@@ -73,5 +72,5 @@ def run_task(llm, retriever, mode: str, grade: int, question: str, history):
     if srcs:
         answer += "\n\nSources:\n" + "\n".join(srcs)
 
-    return answer
+    return answer,sources
 
