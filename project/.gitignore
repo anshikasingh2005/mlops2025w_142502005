@@ -20,3 +20,8 @@ app/logs/
 app/wandb/
 __pycache__/
 *.log
+
+# Ignore environment files
+.env
+project/.env
+.env.backup
