@@ -19,11 +19,8 @@ class Settings(BaseSettings):
 
 settings = Settings()
  
-# ... (all your existing code in config.py) ...
+
 # settings = Settings()
-#
-# --- ADD ALL THE CODE BELOW THIS LINE ---
-#
 
 import json
 
