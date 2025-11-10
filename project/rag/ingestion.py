@@ -2,7 +2,6 @@ from pathlib import Path
 from langchain_community.document_loaders import PyPDFLoader
 
 import pypdf
-# Set the decompression limit higher (e.g., to 500MB)
 pypdf.PdfReader.DECOMPRESSION_LIMIT = 500 * 1024 * 1024
 
 def load_pdfs(dir_path: Path):
