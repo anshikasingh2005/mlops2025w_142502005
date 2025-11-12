@@ -20,9 +20,15 @@ from rag.tasks import run_task
 
 
 print("HF_API_TOKEN loaded:", os.getenv("HF_API_TOKEN"))
-import os
-print("🔐 W&B key loaded:", bool(os.getenv("WANDB_API_KEY")))
 
+print("🔐 W&B key loaded:", bool(os.getenv("WANDB_API_KEY")))
+EMBEDDING_MODEL = os.getenv("EMBEDDING_MODEL", "sentence-transformers/all-MiniLM-L6-v2")
+CHROMA_DIR = os.getenv("CHROMA_DIR", "./data/chroma")
+RETRIEVER_K = int(os.getenv("RETRIEVER_K", 4))
+TGI_URL = os.getenv("TGI_URL", "meta-llama/Meta-Llama-3-8B-Instruct")
+HF_API_TOKEN = os.getenv("HF_API_TOKEN")
+WANDB_API_KEY = os.getenv("WANDB_API_KEY")
+DATASET_REPO_ID = os.getenv("DATASET_REPO_ID")
 #-----chroma->huggingface->build---------
 
 #chroma_dir = Path(settings.CHROMA_DIR)
