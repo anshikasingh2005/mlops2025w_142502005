@@ -1,0 +1,7 @@
+sdk: gradio
+python_version: 3.11
+run:
+  pre_install:
+    - pip install uv
+    - uv sync --frozen --system .
+cmd: uv run python -m app.main
