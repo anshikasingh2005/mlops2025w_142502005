@@ -23,7 +23,42 @@ print("HF_API_TOKEN loaded:", os.getenv("HF_API_TOKEN"))
 import os
 print("🔐 W&B key loaded:", bool(os.getenv("WANDB_API_KEY")))
 
+#-----chroma->huggingface->build---------
 
+#chroma_dir = Path(settings.CHROMA_DIR)
+embedder = get_embedder(settings.EMBEDDING_MODEL)
+# --- STEP 3: Try to load existing local DB or download from Hugging Face ---
+try:
+    print("\n🔍 Checking for existing ChromaDB...")
+    store = load_chroma(embedder, settings.CHROMA_DIR)
+
+    # Check if database actually has documents
+    if store._collection.count() > 0:
+        print(f"✅ Loaded ChromaDB with {store._collection.count()} documents.")
+    else:
+        raise ValueError("ChromaDB loaded but contains no documents.")
+
+# --- STEP 4: If not found or download failed, build from scratch ---
+except Exception as e:
+    print(f"\n⚠️ Could not load existing ChromaDB: {e}")
+    print("📘 Building a new ChromaDB from NCERT documents...")
+
+    # Load and chunk documents
+    if settings.NCERT_DIR.exists():
+        docs = load_pdfs(settings.NCERT_DIR)
+        chunks = split_docs(docs)
+        store = build_chroma(chunks, embedder, settings.CHROMA_DIR)
+        print(f"✅ New ChromaDB built with {store._collection.count()} documents.")
+    else:
+        print(f"❌ NCERT directory not found at {settings.NCERT_DIR}")
+        raise
+# --- STEP 5: Build retriever ---
+retriever = build_retriever(store, k=settings.RETRIEVER_K)
+print("🔎 Retriever initialized successfully.")
+
+#----------------------------------------
+'''
+#-------------older uncommented----------------------
 # Bootstrapping index
 embedder = get_embedder(settings.EMBEDDING_MODEL)
 try:
@@ -40,7 +75,8 @@ except Exception:
     store = build_chroma(chunks, embedder, settings.CHROMA_DIR)
 
 retriever = build_retriever(store, k=settings.RETRIEVER_K)
-
+#--------------------------------------------------------
+'''
 # --- This is the new, fast-loading code ---
 '''
 # 1. Load the embedder
