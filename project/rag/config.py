@@ -3,6 +3,7 @@ from pathlib import Path
 
 class Settings(BaseSettings):
     # Paths
+    gemini_api_key: str | None = None
     CHROMA_DIR: Path = Path("data/chroma")
     NCERT_DIR: Path = Path("data/ncert")
 
