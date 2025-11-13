@@ -1,5 +1,5 @@
 import chromadb
-from db_init import get_data
+from .db_init import get_data
 
 
 
@@ -29,4 +29,4 @@ def search(query: str) -> str | None:
         return docs[0][0]
 
     return None
-c=search("carbon atoms")
+#c=search("carbon atoms")

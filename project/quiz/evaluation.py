@@ -4,7 +4,7 @@ load_dotenv()
 from sentence_transformers import SentenceTransformer
 from sklearn.metrics.pairwise import cosine_similarity
 import numpy as np
-from qn_gen import run_tutor_with_rag
+from .qn_gen import run_tutor_with_rag
 
 # --- 2. Define the new AnswerEvaluator class ---
 # This class handles the logic for comparing the meaning of two sentences.
@@ -33,5 +33,6 @@ def evaluate(user_answer: str, correct_answer: str):
 
     return similarity_score, feedback
 
-user_answer,refined_correct_answer=run_tutor_with_rag("carbon atoms")
-evaluate(user_answer, refined_correct_answer)
+#refined_correct_answer, refined_question = run_tutor_with_rag("machine learning")
+
+#evaluate(user_answer, refined_correct_answer)

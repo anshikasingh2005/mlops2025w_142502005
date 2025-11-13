@@ -1,4 +1,3 @@
-
 '''
 from .prompts import SUMMARIZE, BULLET_NOTES, QUIZ
 from .chain import make_chain, ask
@@ -73,4 +72,3 @@ def run_task(llm, retriever, mode: str, grade: int, question: str, history):
         answer += "\n\nSources:\n" + "\n".join(srcs)
 
     return answer,sources
-

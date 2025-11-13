@@ -6,9 +6,10 @@ import shutil
 import os
 from dotenv import load_dotenv
 load_dotenv()
-from retrive import search
+from .retrive import search
 from transformers import AutoTokenizer, AutoModelForSeq2SeqLM
-from google import genai
+from huggingface_hub import InferenceClient
+
 
 # Run this only if model_dir was successfully set in the previous cell:
 
@@ -64,6 +65,10 @@ def run_tutor_with_rag(topic):
         print("TUTOR: I found information but had trouble forming a question.")
         return
     
+    print("from bart model")
+    print(f"\nGenerated Question: {generated_question}")
+    print(f"Correct Answer: {correct_answer}"  )
+    print("  -> Refining the question and answer using Llama 3...")       
     
     prompt = f"""
     Refine the question and answer below. 
@@ -80,18 +85,32 @@ def run_tutor_with_rag(topic):
     """
     
     
-    api_key = os.getenv("GEMINI_API_KEY")
-    client = genai.Client(api_key=api_key)
-    response = client.models.generate_content(
-    model="gemini-2.5-flash",  
-    contents=prompt)
+    # api_key = os.getenv("GEMINI_API_KEY")
+    # client = genai.Client(api_key=api_key)
+    # response = client.models.generate_content(
+    # model="gemini-2.5-flash",  
+    # contents=prompt)
+    model_name = "meta-llama/Meta-Llama-3-8B-Instruct"
+    client = InferenceClient(model_name, token=os.getenv("HF_API_TOKEN"))
     
+    try:
+        res =client.chat_completion(
+            messages=[{"role": "user", "content": prompt}],
+            max_tokens=512,
+            temperature=0.7,
+        )
+        response=res.choices[0].message["content"]
+        print("---------------------------------")
+        print(response)
+        print("---------------------------------")
+    except Exception as e:
+        return f"⚠️ Error communicating with model: {e}"
     
     ref_q, ref_a = "", ""
     refined_question, refined_correct_answer = "", ""
     
     try:
-        ref_q, ref_a = response.text.split("Answer:")
+        ref_q, ref_a = response.split("Answer:")
         refined_question = ref_q.replace("Question:", "").strip()
         refined_correct_answer = ref_a.strip()
     except:
@@ -101,14 +120,14 @@ def run_tutor_with_rag(topic):
     
     
     print(f"\nQUESTION: {refined_question}")
-    user_answer = input("YOUR ANSWER: ")
+    # user_answer = input("YOUR ANSWER: ")
 
-    print("-" * 25)
-    print(f"Your Answer:    '{user_answer}'")
-    print(f"Correct Answer: '{refined_correct_answer}'")
-    print("=" * 60)
+    # print("-" * 25)
+    # print(f"Your Answer:    '{user_answer}'")
+    # print(f"Correct Answer: '{refined_correct_answer}'")
+    # print("=" * 60)
     
-    return user_answer,refined_correct_answer,refined_question
+    return refined_correct_answer,refined_question
     
     
     
@@ -121,4 +140,4 @@ def run_tutor_with_rag(topic):
 
 
 
-run_tutor_with_rag("carbon atoms")
+#run_tutor_with_rag("photosynthesis ")
