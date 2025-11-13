@@ -1,24 +1,39 @@
 import os
 from pathlib import Path
 from chromadb import PersistentClient
+from huggingface_hub import snapshot_download
 
 def get_data():
-    # Always build path relative to this file location
+    """
+    Load ChromaDB collection either from local folder (if present)
+    or directly from Hugging Face Hub dataset (for Spaces deployment).
+    """
     base_dir = Path(__file__).resolve().parent.parent  # go up from /quiz to /project
-    chroma_db_path = base_dir / "data" / "chroma"
+    local_chroma_path = base_dir / "data" / "chroma"
+    local_chroma_path = local_chroma_path.resolve()
 
-    chroma_db_path = chroma_db_path.resolve()
+    # Hugging Face dataset repo ID
+    hf_dataset_id = "Shivani4444/mlops-ragsystem-chroma"
 
-    if not chroma_db_path.exists():
-        raise FileNotFoundError(f"❌ ChromaDB folder not found at: {chroma_db_path}")
+    # 1️⃣ Prefer local path if it exists
+    if local_chroma_path.exists():
+        print(f"✅ Connected to local ChromaDB at:\n{local_chroma_path}")
+        client = PersistentClient(path=str(local_chroma_path))
+        collection = client.get_collection(name="langchain")
+        return collection
 
-    print(f"✅ Connected to ChromaDB at:\n{chroma_db_path}")
-    
-    client = PersistentClient(path=str(chroma_db_path))
-    collection = client.get_collection(name="langchain")
-
-
-    return collection
-
-client = get_data() 
-print(client)
+    # 2️⃣ Otherwise, download dataset snapshot from Hugging Face Hub
+    print(f"🌐 Local ChromaDB not found. Downloading from Hugging Face Hub ({hf_dataset_id})...")
+    try:
+        hf_cache_dir = snapshot_download(
+            repo_id=hf_dataset_id,
+            repo_type="dataset",
+            local_dir="/tmp/chroma_db_local",  # temporary storage for Spaces
+            local_dir_use_symlinks=False,
+        )
+        print(f"✅ Downloaded ChromaDB dataset to: {hf_cache_dir}")
+        client = PersistentClient(path=hf_cache_dir)
+        collection = client.get_collection(name="langchain")
+        return collection
+    except Exception as e:
+        raise RuntimeError(f"❌ Failed to load ChromaDB from Hugging Face: {e}")
