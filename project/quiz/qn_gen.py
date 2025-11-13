@@ -25,13 +25,28 @@ from huggingface_hub import InferenceClient
 # --- The Interactive Tutor Function with RAG ---
 def run_tutor_with_rag(topic):
     
-    db_local_path='/content/chroma_db_local'
-    model_dir = os.path.abspath("quiz/model")
-    print(f"\nLoading best BART model from the downloaded W&B artifact at: {model_dir}")
-    tokenizer = AutoTokenizer.from_pretrained(model_dir, local_files_only=True)
-    model = AutoModelForSeq2SeqLM.from_pretrained(model_dir, local_files_only=True)
-    model.eval()
-    print("✅ BART model is ready.")
+    db_local_path = "https://huggingface.co/datasets/Shivani4444/mlops-ragsystem-chroma/resolve/main"
+    model_id = "chershilhyde/bart-qna-generator-finetuned"
+    print(f"\n🔍 Attempting to load fine-tuned BART model from Hugging Face: {model_id}")
+    
+    hf_token = os.getenv("HF_API_TOKEN")  
+    
+    try:
+        print("→ Loading tokenizer...")
+        tokenizer = AutoTokenizer.from_pretrained(model_id, token=hf_token)
+        print("✅ Tokenizer loaded successfully.")
+    except Exception as e:
+        print(f"⚠️ Error while loading tokenizer: {e}")
+        return
+    
+    try:
+        print("→ Loading model weights...")
+        model = AutoModelForSeq2SeqLM.from_pretrained(model_id, token=hf_token)
+        model.eval()
+        print("✅ Model weights loaded successfully and ready for inference.")
+    except Exception as e:
+        print(f"⚠️ Error while loading model: {e}")
+        return
     
     
     
@@ -139,5 +154,4 @@ def run_tutor_with_rag(topic):
 
 
 
-
-#run_tutor_with_rag("photosynthesis ")
+#run_tutor_with_rag("carbon")
