@@ -64,6 +64,28 @@ def log_interaction_advanced(
         "success": int(success),
         "mode": mode,
     })
+    # --- trigger alerts based on thresholds ---
+    maybe_trigger_alert("total_latency_s", latency, threshold=5.0, message=f"Slow response for mode={mode}")
+    maybe_trigger_alert("error_rate", 1 - int(success), threshold=0.5, message="High failure rate detected.")
+
+
+def maybe_trigger_alert(metric_name: str, value: float, threshold: float, message: str):
+    """
+    Trigger a W&B alert when a metric crosses a threshold.
+    Works on all tiers, including Free.
+    """
+    try:
+        if value > threshold:
+            wandb.alert(
+                title=f"{metric_name} Alert",
+                text=f"{metric_name} = {value:.2f} exceeded threshold ({threshold})\nDetails: {message}",
+                level=wandb.AlertLevel.WARN
+            )
+    except Exception as e:
+        logger.warning(f"Failed to send W&B alert: {e}")
+
+
+
 
 
 def log_error(question: str, e: Exception, trace: str = ""):
